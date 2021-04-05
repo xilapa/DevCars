@@ -7,20 +7,21 @@ namespace DevCars.API.Entities
 {
     public class Order
     {
-        public Order(int id, int idCar, int idCustomer, decimal carPrice, List<ExtraOrderItem> extraItems)
+        protected Order() { }
+        public Order(int idCar, int idCustomer, decimal carPrice, List<ExtraOrderItem> extraItems)
         {
-            Id = id;
             IdCar = idCar;
             IdCustomer = idCustomer;
             ExtraItems = extraItems;
 
-            TotalCost = extraItems.Sum(e => e.Price) + carPrice;
-                      
+            TotalCost = extraItems.Sum(e => e.Price) + carPrice;                      
         }
 
         public int Id { get; private set; }
         public int IdCar { get; private set; }
+        public Car Car { get; set; }
         public int IdCustomer { get; private set; }
+        public Customer Customer { get; set; }
         public decimal TotalCost { get; private set; }
         public List<ExtraOrderItem> ExtraItems { get; private set; }
 
@@ -28,11 +29,11 @@ namespace DevCars.API.Entities
 
     public class ExtraOrderItem
     {
-        public ExtraOrderItem(string description, decimal price, int idOrder)
+        protected ExtraOrderItem() { }
+        public ExtraOrderItem(string description, decimal price)
         {
             Description = description;
             Price = price;
-            IdOrder = idOrder;
         }
 
         public int Id { get; private set; }

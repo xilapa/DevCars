@@ -2,11 +2,13 @@
 using DevCars.API.Persistence;
 using DevCars.API.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DevCars.API.Entities;
+
 
 namespace DevCars.API.Controllers
 {
@@ -48,9 +50,9 @@ namespace DevCars.API.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] AddCarInputModel im)
         {
-            var lastId = dbContext.Cars.Last().Id;
-            var car = new Car(lastId + 1, im.Brand, im.Model, im.VinCode, im.Color, im.Year, im.Price, im.ProductionDate);
+            var car = new Car(im.Brand, im.Model, im.VinCode, im.Color, im.Year, im.Price, im.ProductionDate);
             dbContext.Cars.Add(car);
+            dbContext.SaveChanges();
             return CreatedAtAction(nameof(GetById),new { id = car.Id },im);
         }
 
@@ -62,6 +64,7 @@ namespace DevCars.API.Controllers
             if (car == null) return NotFound();
 
             car.Update(im.Color, im.Price);
+            dbContext.SaveChanges();
 
             return NoContent();
         }
@@ -70,10 +73,10 @@ namespace DevCars.API.Controllers
         public IActionResult Delete(int id)
         {
             var car = dbContext.Cars.SingleOrDefault(c => c.Id == id);
-
             if (car == null) return NotFound();
 
             car.SetAsSuspended();
+            dbContext.SaveChanges();
 
             return NoContent();
         }

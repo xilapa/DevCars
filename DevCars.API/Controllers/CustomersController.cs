@@ -3,6 +3,7 @@ using DevCars.API.InputModels;
 using DevCars.API.Persistence;
 using DevCars.API.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,9 +23,9 @@ namespace DevCars.API.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] AddCustomerInputModel im)
         {
-            var lastId = dbContext.Customers.Last().Id;
-            var customer = new Customer(lastId + 1, im.FullName, im.Document, im.BirthDate);
+            var customer = new Customer(im.FullName, im.Document, im.BirthDate);
             dbContext.Customers.Add(customer);
+            dbContext.SaveChanges();
             return NoContent();
         }
 
@@ -35,25 +36,21 @@ namespace DevCars.API.Controllers
             if (id != im.IdCustomer) return BadRequest();
 
             // obtendo carro do bd para selecionar o preço
-            var car = dbContext.Cars.SingleOrDefault(c => c.Id == im.IdCar);
+            var car = dbContext.Cars
+                .SingleOrDefault(c => c.Id == im.IdCar);
 
-            // obtendo cliente para selecionar o último id de order
-            var customer = dbContext.Customers
-                .SingleOrDefault(c => c.Id == im.IdCustomer);
-            var lastOrder = customer.Orders.LastOrDefault();
-            var lastId = 1;
-            if (lastOrder != null) lastId = lastOrder.Id;
-
+            if (car == null) return NotFound();
+            if (car.Status != CarStatusEnum.Available) return BadRequest("O carro selecionado não esta disponível para venda");
 
             // gerando lista de itens extras com base no input model
             var extraItems = im.ExtraItems
-                .Select(e => new ExtraOrderItem(e.Description, e.Price, lastId + 1))
+                .Select(e => new ExtraOrderItem(e.Description, e.Price))
                 .ToList();
 
-            var order = new Order(lastId + 1, im.IdCar, im.IdCustomer, car.Price, extraItems);
-
-            customer.Purchase(order);
+            var order = new Order(im.IdCar, im.IdCustomer, car.Price, extraItems);
+            dbContext.Orders.Add(order);
             car.Sold();
+            dbContext.SaveChanges();
 
             return CreatedAtAction(nameof(GetOrder), new { id = im.IdCustomer, orderId = order.Id }, im);
         }
@@ -62,10 +59,10 @@ namespace DevCars.API.Controllers
         [HttpGet("{id}/orders/{orderId}")]
         public IActionResult GetOrder(int id, int orderId)
         {
-            var customer = dbContext.Customers.SingleOrDefault(c => c.Id == id);
-            if (customer == null) return NotFound();
-
-            var order = customer.Orders.SingleOrDefault(o => o.Id == orderId);
+            var order = dbContext.Orders
+                .Include(o => o.ExtraItems)
+                .AsNoTracking()
+                .SingleOrDefault(o => o.Id == orderId);
             if (order == null) return NotFound();
 
             var extraItems = order.ExtraItems.Select(e => e.Description).ToList();

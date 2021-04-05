@@ -9,9 +9,9 @@ namespace DevCars.API.Entities
 
     public class Car
     {
-        public Car(int id, string brand, string model, string vinCode, string color, int year, decimal price, DateTime productionDate)
+        protected Car() {}
+        public Car(string brand, string model, string vinCode, string color, int year, decimal price, DateTime productionDate)
         {
-            Id = id;
             Brand = brand;
             Model = model;
             VinCode = vinCode;
