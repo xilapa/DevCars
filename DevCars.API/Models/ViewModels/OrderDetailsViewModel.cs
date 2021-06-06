@@ -15,9 +15,9 @@ namespace DevCars.API.Models.ViewModels
             ExtraItems = extraItems;
         }
 
-        public int IdCar { get; set; }
-        public int IdCustomer { get; set; }
-        public decimal TotalCost { get; set; }
-        public List<string> ExtraItems { get; set; }
+        public int IdCar { get; private set; }
+        public int IdCustomer { get; private set; }
+        public decimal TotalCost { get; private set; }
+        public List<string> ExtraItems { get; private set; }
     }
 }

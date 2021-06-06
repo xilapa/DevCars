@@ -18,12 +18,12 @@ namespace DevCars.API.Models.ViewModels
             ProductionDate = productionDate;
         }
 
-        public int Id { get; set; }
-        public string Brand { get; set; }
-        public string Model { get; set; }
-        public string Color { get; set; }
-        public int Year { get; set; }
-        public decimal Price { get; set; }
-        public DateTime ProductionDate { get; set; }
+        public int Id { get; private set; }
+        public string Brand { get; private set; }
+        public string Model { get; private set; }
+        public string Color { get; private set; }
+        public int Year { get; private set; }
+        public decimal Price { get; private set; }
+        public DateTime ProductionDate { get; private set; }
     }
 }
