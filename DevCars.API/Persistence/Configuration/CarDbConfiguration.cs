@@ -41,9 +41,6 @@ namespace DevCars.API.Persistence.Configuration
             builder.Property(c => c.Status)
                 .IsRequired()
                 .HasDefaultValue(CarStatusEnum.Available);
-
-            builder.Property(c => c.RegisteredAt)
-                .HasDefaultValueSql("getdate()");
         }
     }
 }

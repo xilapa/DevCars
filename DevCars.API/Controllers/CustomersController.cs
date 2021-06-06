@@ -1,7 +1,7 @@
 ﻿using DevCars.API.Entities;
-using DevCars.API.InputModels;
+using DevCars.API.Models.InputModels;
 using DevCars.API.Persistence;
-using DevCars.API.ViewModels;
+using DevCars.API.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;

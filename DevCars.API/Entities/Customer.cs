@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace DevCars.API.Entities
 {
-    public class Customer
+    public class Customer : BaseEntity
     {
-        protected Customer() { }
+        protected Customer() : base() { }
         public Customer(string fullName, string document, DateTime birthDate)
         {
             FullName = fullName;
@@ -17,7 +17,6 @@ namespace DevCars.API.Entities
             Orders = new List<Order>();
         }
 
-        public int Id { get; private set; }
         public string FullName { get; private set; }
         public string Document { get; private set; }
         public DateTime BirthDate { get; private set; }

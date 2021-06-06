@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DevCars.API.ViewModels
+namespace DevCars.API.Models.ViewModels
 {
     // modelo utilizado para retornar na listagem de carros
     public class CarItemViewModel

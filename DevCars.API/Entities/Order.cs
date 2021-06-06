@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace DevCars.API.Entities
 {
-    public class Order
+    public class Order : BaseEntity
     {
-        protected Order() { }
+        protected Order(): base() { }
         public Order(int idCar, int idCustomer, decimal carPrice, List<ExtraOrderItem> extraItems)
         {
             IdCar = idCar;
@@ -17,7 +17,6 @@ namespace DevCars.API.Entities
             TotalCost = extraItems.Sum(e => e.Price) + carPrice;                      
         }
 
-        public int Id { get; private set; }
         public int IdCar { get; private set; }
         public Car Car { get; set; }
         public int IdCustomer { get; private set; }
@@ -27,7 +26,7 @@ namespace DevCars.API.Entities
 
     }
 
-    public class ExtraOrderItem
+    public class ExtraOrderItem : BaseEntity
     {
         protected ExtraOrderItem() { }
         public ExtraOrderItem(string description, decimal price)
@@ -36,7 +35,6 @@ namespace DevCars.API.Entities
             Price = price;
         }
 
-        public int Id { get; private set; }
         public string Description { get; private set; }
         public decimal Price { get; private set; }
         public int IdOrder { get; private set; }

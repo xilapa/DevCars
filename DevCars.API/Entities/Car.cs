@@ -5,11 +5,9 @@ using System.Threading.Tasks;
 
 namespace DevCars.API.Entities
 {
-
-
-    public class Car
+    public class Car : BaseEntity
     {
-        protected Car() {}
+        protected Car() : base() {}
         public Car(string brand, string model, string vinCode, string color, int year, decimal price, DateTime productionDate)
         {
             Brand = brand;
@@ -19,12 +17,9 @@ namespace DevCars.API.Entities
             Year = year;
             Price = price;
             ProductionDate = productionDate;
-
             Status = CarStatusEnum.Available;
-            RegisteredAt = DateTime.Now;
         }
 
-        public int Id { get; private set; }
         public string Brand { get; private set; }
         public string Model { get; private set; }
         public string VinCode { get; private set; }
@@ -33,7 +28,7 @@ namespace DevCars.API.Entities
         public decimal Price { get; private set; }
         public DateTime ProductionDate { get; private set; }
         public CarStatusEnum Status { get; private set; }
-        public DateTime RegisteredAt { get; private set; }
+
 
         public void Update(string color, decimal price)
         {
