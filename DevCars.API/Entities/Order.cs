@@ -28,7 +28,7 @@ namespace DevCars.API.Entities
 
     public class ExtraOrderItem : BaseEntity
     {
-        protected ExtraOrderItem() { }
+        protected ExtraOrderItem(): base() { }
         public ExtraOrderItem(string description, decimal price)
         {
             Description = description;
