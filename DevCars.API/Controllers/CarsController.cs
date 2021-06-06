@@ -3,10 +3,7 @@ using DevCars.API.Persistence;
 using DevCars.API.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using DevCars.API.Entities;
 using Microsoft.Extensions.Configuration;
 using Dapper;
@@ -52,7 +49,7 @@ namespace DevCars.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById (int id)
+        public IActionResult GetById ([FromRoute] int id)
         {
             var car = dbContext.Cars.SingleOrDefault(c => c.Id == id);
 

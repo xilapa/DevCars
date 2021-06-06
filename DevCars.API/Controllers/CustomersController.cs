@@ -4,10 +4,7 @@ using DevCars.API.Persistence;
 using DevCars.API.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace DevCars.API.Controllers
 {
@@ -57,7 +54,7 @@ namespace DevCars.API.Controllers
 
         // post api/customer/1/orders/2
         [HttpGet("{id}/orders/{orderId}")]
-        public IActionResult GetOrder(int id, int orderId)
+        public IActionResult GetOrder([FromRoute] int id, [FromRoute] int orderId)
         {
             var order = dbContext.Orders
                 .Include(o => o.ExtraItems)
@@ -67,7 +64,7 @@ namespace DevCars.API.Controllers
 
             var extraItems = order.ExtraItems.Select(e => e.Description).ToList();
 
-            var orderDetailsViewModel = new OrderDetailsViewModel(order.IdCar,order.IdCustomer, order.TotalCost, extraItems);
+            var orderDetailsViewModel = new OrderDetailsViewModel(order.IdCar, order.IdCustomer, order.TotalCost, extraItems);
 
             return Ok(orderDetailsViewModel);
         }
